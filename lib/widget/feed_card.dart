@@ -3,13 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sspai/bean/feed_attribute.dart';
-import 'package:sspai/bean/matrix_entity.dart';
 
 // ignore: must_be_immutable
 class FeedCard extends StatelessWidget {
-  FeedCard({Key key, this.matrixData}) : super(key: key);
+  FeedCard({Key key, this.feedAttribute}) : super(key: key);
 
-  MatrixData matrixData;
+  FeedAttribute feedAttribute;
 
   @override
   Widget build(BuildContext context) {
@@ -21,36 +20,28 @@ class FeedCard extends StatelessWidget {
           Flex(
             children: <Widget>[
               IconNameAndOptions(
-                avatar: matrixData.author.avatar,
-                nickname: matrixData.author.nickname,
+                avatar: feedAttribute.avatar,
+                nickname: feedAttribute.nickname,
               ),
               GestureDetector(
                 child: Column(
                   children: <Widget>[
-                    ImageFromWeb(banner: matrixData.banner),
+                    ImageFromWeb(banner: feedAttribute.banner),
                     TextTitleAndBody(
-                      title: matrixData.title,
-                      summary: matrixData.summary,
+                      title: feedAttribute.title,
+                      summary: feedAttribute.summary,
                     ),
                   ],
                 ),
                 onTap: () => {
-                  Navigator.of(context).pushNamed("article_page",
-                      arguments: new FeedAttribute(
-                          matrixData.id,
-                          matrixData.title,
-                          matrixData.author.avatar,
-                          matrixData.author.nickname,
-                          matrixData.likeCount,
-                          matrixData.commentCount,
-                          matrixData.releasedTime,
-                          matrixData.banner))
+                  Navigator.of(context)
+                      .pushNamed("article_page", arguments: feedAttribute)
                 },
               ),
               BottomInfo(
-                like_count: matrixData.likeCount,
-                comment_count: matrixData.commentCount,
-                released_time: matrixData.releasedTime,
+                like_count: feedAttribute.likeCount,
+                comment_count: feedAttribute.commentCount,
+                released_time: feedAttribute.releasedTime,
               )
             ],
             direction: Axis.vertical,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sspai/bean/feed_attribute.dart';
 import 'package:sspai/request/request.dart';
 import 'package:sspai/widget/feed_card.dart';
 
@@ -31,8 +32,16 @@ class _MatrixState extends State<Matrix> with SingleTickerProviderStateMixin {
             itemCount: snapshot.data.data.length,
             itemBuilder: (BuildContext context, int index) {
               return FeedCard(
-                matrixData: snapshot.data.data[index],
-              );
+                  feedAttribute: new FeedAttribute(
+                      snapshot.data.data[index].id,
+                      snapshot.data.data[index].title,
+                      snapshot.data.data[index].author.avatar,
+                      snapshot.data.data[index].author.nickname,
+                      snapshot.data.data[index].likeCount,
+                      snapshot.data.data[index].commentCount,
+                      snapshot.data.data[index].releasedTime,
+                      snapshot.data.data[index].banner,
+                      snapshot.data.data[index].summary));
             },
           );
         } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sspai/page/index.dart';
 import 'package:sspai/page/matrix.dart';
 
 class Skeleton extends StatefulWidget {
@@ -47,7 +48,7 @@ class _SkeletonState extends State<Skeleton> {
     super.initState();
     print('initState _ContainerPageState');
     if (pages == null) {
-      pages = [Container(), Matrix()];
+      pages = [Index(), Matrix()];
     }
     if (itemList == null) {
       itemList = itemNames
@@ -69,7 +70,9 @@ class _SkeletonState extends State<Skeleton> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Matrix"),
+        title: _selectIndex == 0
+            ? Text("首页")
+            : _selectIndex == 1 ? Text("Matrix") : Text("未完成，届时改成列表读取"),
       ),
       body: Stack(
         children: <Widget>[_getPagesWidget(0), _getPagesWidget(1)],

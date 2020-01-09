@@ -7,12 +7,13 @@ class FeedAttribute {
   int commentCount;
   int releasedTime;
   String banner;
+  String summary;
 
   FeedAttribute(this.id, this.title, this.avatar, this.nickname, this.likeCount,
-      this.commentCount, this.releasedTime, this.banner);
+      this.commentCount, this.releasedTime, this.banner,this.summary);
 
   FeedAttribute.name(this.id, this.title, this.avatar, this.nickname,
-      this.likeCount, this.commentCount, this.releasedTime, this.banner);
+      this.likeCount, this.commentCount, this.releasedTime, this.banner,this.summary);
 
 
 }
