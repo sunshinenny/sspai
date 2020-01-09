@@ -1,6 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart' show parse;
 import 'package:sspai/bean/matrix_entity.dart';
 import 'package:sspai/request/api.dart';
 
@@ -12,6 +12,19 @@ class Request {
       return new MatrixEntity().fromJson(response.data);
     } catch (e) {
       print(e);
+    }
+  }
+
+ static Future<String> getArticleContext(int id) async {
+    try {
+      Response response = await Dio().get("https://sspai.com/post/$id");
+      dom.Document document = parse(response.data);
+      var querySelector = document.body.querySelector(
+          '#app > div.postPage.article-wrapper > div.article-detail > article > div.article-body');
+      return querySelector.innerHtml;
+    } catch (e) {
+      print(e);
+      return e;
     }
   }
 }

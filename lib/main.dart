@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sspai/skeleton.dart';
+import 'package:sspai/page/article.dart';
+import 'package:sspai/page/splash/splash_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: Skeleton(),
+      home: SplashWidget(),
+      routes: {
+        "article_page": (context) => Article(),
+      },
     );
   }
 }

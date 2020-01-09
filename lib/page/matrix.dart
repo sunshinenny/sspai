@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sspai/request/request.dart';
+import 'package:sspai/widget/feed_card.dart';
 
 class Matrix extends StatefulWidget {
   @override
@@ -22,6 +24,22 @@ class _MatrixState extends State<Matrix> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return FutureBuilder(
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return FeedCard(
+                matrixData: snapshot.data.data[index],
+              );
+            },
+          );
+        } else {
+          return LinearProgressIndicator();
+        }
+      },
+      future: Request.getMatrixFuture(20, 0),
+    );
   }
 }

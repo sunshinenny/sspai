@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sspai/bean/feed_attribute.dart';
 import 'package:sspai/bean/matrix_entity.dart';
 
+// ignore: must_be_immutable
 class FeedCard extends StatelessWidget {
   FeedCard({Key key, this.matrixData}) : super(key: key);
 
@@ -25,7 +27,7 @@ class FeedCard extends StatelessWidget {
               GestureDetector(
                 child: Column(
                   children: <Widget>[
-                    ImageFromSspai(banner: matrixData.banner),
+                    ImageFromWeb(banner: matrixData.banner),
                     TextTitleAndBody(
                       title: matrixData.title,
                       summary: matrixData.summary,
@@ -33,11 +35,19 @@ class FeedCard extends StatelessWidget {
                   ],
                 ),
                 onTap: () => {
-                  //                  Navigator.of(context)
-                  //                      .pushNamed("article_datail", arguments: matrixData)
+                  Navigator.of(context).pushNamed("article_page",
+                      arguments: new FeedAttribute(
+                          matrixData.id,
+                          matrixData.title,
+                          matrixData.author.avatar,
+                          matrixData.author.nickname,
+                          matrixData.likeCount,
+                          matrixData.commentCount,
+                          matrixData.releasedTime,
+                          matrixData.banner))
                 },
               ),
-              ButtomInfo(
+              BottomInfo(
                 like_count: matrixData.likeCount,
                 comment_count: matrixData.commentCount,
                 released_time: matrixData.releasedTime,
@@ -52,6 +62,7 @@ class FeedCard extends StatelessWidget {
 }
 
 /// 用户头像、用户名和操作项
+// ignore: must_be_immutable
 class IconNameAndOptions extends StatelessWidget {
   IconNameAndOptions({Key key, this.avatar, this.nickname}) : super(key: key);
 
@@ -69,13 +80,13 @@ class IconNameAndOptions extends StatelessWidget {
             GestureDetector(
               child: ClipOval(
                   child: Image.network(
-                "https://cdn.sspai.com/${avatar}",
+                "https://cdn.sspai.com/$avatar",
                 width: 40,
               )),
               onTap: () => {print("Show User Home Page")},
             ),
             Text(
-              "${nickname}",
+              "$nickname",
               style: TextStyle(
                   fontSize: 18,
                   color: isDarkMode(context) ? Colors.white : Colors.black54),
@@ -106,6 +117,7 @@ class IconNameAndOptions extends StatelessWidget {
 }
 
 /// 文章标题以及文章简介部分
+// ignore: must_be_immutable
 class TextTitleAndBody extends StatelessWidget {
   TextTitleAndBody({Key key, this.title, this.summary}) : super(key: key);
 
@@ -119,7 +131,7 @@ class TextTitleAndBody extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "${title}",
+            "$title",
             maxLines: 2,
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
           ),
@@ -127,7 +139,7 @@ class TextTitleAndBody extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "${summary}",
+            "$summary",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -141,8 +153,9 @@ class TextTitleAndBody extends StatelessWidget {
 }
 
 /// 从少数派读取的图片
-class ImageFromSspai extends StatelessWidget {
-  ImageFromSspai({Key key, this.banner}) : super(key: key);
+// ignore: must_be_immutable
+class ImageFromWeb extends StatelessWidget {
+  ImageFromWeb({Key key, this.banner}) : super(key: key);
 
   String banner;
 
@@ -153,7 +166,7 @@ class ImageFromSspai extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6.0),
         child: Image.network(
-          "https://cdn.sspai.com/${banner}?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1",
+          "https://cdn.sspai.com/$banner?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1",
         ),
       ),
     );
@@ -162,12 +175,19 @@ class ImageFromSspai extends StatelessWidget {
 }
 
 /// 底部点赞等信息展示栏
-class ButtomInfo extends StatelessWidget {
-  ButtomInfo({Key key, this.like_count, this.comment_count, this.released_time})
+// ignore: must_be_immutable
+class BottomInfo extends StatelessWidget {
+  // ignore: non_constant_identifier_names
+  BottomInfo({Key key, this.like_count, this.comment_count, this.released_time})
       : super(key: key);
 
+  // ignore: non_constant_identifier_names
   int like_count;
+
+  // ignore: non_constant_identifier_names
   int comment_count;
+
+  // ignore: non_constant_identifier_names
   int released_time;
 
   @override
@@ -190,7 +210,7 @@ class ButtomInfo extends StatelessWidget {
                     size: 15,
                   ),
                   Text(
-                    "${like_count} · ${comment_count} 评论",
+                    "$like_count · $comment_count 评论",
                     style: TextStyle(
                         fontSize: 15,
                         color: isDarkMode(context)
