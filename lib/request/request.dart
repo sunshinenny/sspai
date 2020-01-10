@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
+import 'package:sspai/bean/comment_entity.dart';
 import 'package:sspai/bean/index_entity.dart';
 import 'package:sspai/bean/matrix_entity.dart';
 import 'package:sspai/request/api.dart';
@@ -38,6 +40,17 @@ class Request {
     } catch (e) {
       print(e);
       return e;
+    }
+  }
+
+  // ignore: missing_return
+  static Future<CommentEntity> getCommentFuture(
+      int count, int offset, int id) async {
+    try {
+      Response response = await Dio().get(API.getComment(count, offset, id));
+      return new CommentEntity().fromJson(response.data);
+    } catch (e) {
+      print(e);
     }
   }
 }

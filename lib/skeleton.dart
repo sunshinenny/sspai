@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sspai/page/comment.dart';
 import 'package:sspai/page/index.dart';
 import 'package:sspai/page/matrix.dart';
 
@@ -28,9 +29,10 @@ class _SkeletonState extends State<Skeleton> {
   ];
 
   List<Widget> pages;
+  final pageNames = ["Index", "Matrix", "Me"];
   List<BottomNavigationBarItem> itemList;
 
-  int _selectIndex = 1;
+  int _selectIndex = 0;
 
   //Stack（层叠布局）+Offstage组合,解决状态被重置的问题
   Widget _getPagesWidget(int index) {
@@ -70,12 +72,14 @@ class _SkeletonState extends State<Skeleton> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _selectIndex == 0
-            ? Text("首页")
-            : _selectIndex == 1 ? Text("Matrix") : Text("未完成，届时改成列表读取"),
+        title: Text(pageNames[_selectIndex]),
       ),
       body: Stack(
-        children: <Widget>[_getPagesWidget(0), _getPagesWidget(1)],
+        children: <Widget>[
+          _getPagesWidget(0),
+          _getPagesWidget(1),
+          //          _getPagesWidget(2)
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: itemList,

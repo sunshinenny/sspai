@@ -6,4 +6,8 @@ class API {
   static getMatrix(int count, int offset) {
     return "https://sspai.com/api/v1/article/matrix/page/get?limit=$count&offset=$offset";
   }
+
+  static getComment(int count, int offset, int id) {
+    return "https://sspai.com/api/v1/comment/user/article/hot/page/get?limit=$count&offset=$offset&article_id=$id";
+  }
 }

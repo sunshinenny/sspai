@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sspai/bean/feed_attribute.dart';
+import 'package:sspai/util/date_utils.dart';
 
 // ignore: must_be_immutable
 class FeedCard extends StatelessWidget {
@@ -69,11 +70,20 @@ class IconNameAndOptions extends StatelessWidget {
           spacing: 8,
           children: <Widget>[
             GestureDetector(
-              child: ClipOval(
-                  child: Image.network(
-                "https://cdn.sspai.com/$avatar",
-                width: 40,
-              )),
+              child: Stack(
+                children: <Widget>[
+                  // 为了保证图片未加载时候的显示效果
+                  ClipOval(
+                      child: Container(
+                    width: 40,
+                  )),
+                  ClipOval(
+                      child: Image.network(
+                    "https://cdn.sspai.com/$avatar",
+                    width: 40,
+                  )),
+                ],
+              ),
               onTap: () => {print("Show User Home Page")},
             ),
             Text(
@@ -154,11 +164,24 @@ class ImageFromWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(6.0),
-        child: Image.network(
-          "https://cdn.sspai.com/$banner?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1",
-        ),
+      child: Stack(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6.0),
+            child: Container(
+              width: 450,
+              height: 150,
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6.0),
+            child: Image.network(
+              "https://cdn.sspai.com/$banner?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1",
+              width: 450,
+              height: 150,
+            ),
+          ),
+        ],
       ),
     );
     //                    "https://cdn.sspai.com/article/55806f27-a137-0fb3-1248-0bffd08a773c.jpg?imageMogr2/quality/95/thumbnail/!456x456r/gravity/Center/crop/456x456/interlace/1",
@@ -219,7 +242,7 @@ class BottomInfo extends StatelessWidget {
                   color: isDarkMode(context) ? Colors.white : Colors.grey[500],
                   size: 15),
               Text(
-                " ${getHowLongAgo(released_time)}前推荐",
+                " ${DateUtils.getHowLongAgo(released_time * 1000)}推荐",
                 style: TextStyle(
                     fontSize: 15,
                     color:
@@ -231,13 +254,6 @@ class BottomInfo extends StatelessWidget {
       ),
     );
   }
-}
-
-String getHowLongAgo(int timestamp) {
-  int nowTimestamp = DateTime.now().millisecondsSinceEpoch;
-  int d = (nowTimestamp - timestamp * 1000) ~/ (3600 * 1000);
-  String msg = d >= 24 ? "${d ~/ 24} 天" : "$d 小时";
-  return msg;
 }
 
 bool isDarkMode(BuildContext context) {

@@ -37,7 +37,7 @@ class _ArticleState extends State<Article> with SingleTickerProviderStateMixin {
                 icon: Icon(Icons.chat_bubble_outline),
                 onPressed: () {
                   Navigator.of(context)
-                      .pushNamed("comment_list", arguments: feedAttribute.id);
+                      .pushNamed("comment_page", arguments: feedAttribute.id);
                 },
               ),
               Text('${feedAttribute.commentCount}'),
