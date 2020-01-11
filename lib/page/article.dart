@@ -27,6 +27,7 @@ class _ArticleState extends State<Article> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     FeedAttribute feedAttribute = ModalRoute.of(context).settings.arguments;
+    print(feedAttribute.id);
     return Scaffold(
       appBar: AppBar(
         title: Text(""),

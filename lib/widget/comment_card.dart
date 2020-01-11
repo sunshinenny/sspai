@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:sspai/bean/comment_entity.dart';
 import 'package:sspai/util/date_utils.dart';
+import 'package:sspai/util/path_convert.dart';
 
 class CommentCard extends StatefulWidget {
   CommentCard({Key key, this.commentData}) : super(key: key);
@@ -68,13 +69,7 @@ class MainCard extends StatelessWidget {
                             width: 36,
                           ),
                         ),
-                        ClipOval(
-                          child: Container(
-                            width: 36,
-                            child: Image.network(
-                                "https://cdn.sspai.com${commentData.user.avatar}"),
-                          ),
-                        ),
+                        BuildAvatarWidget(path: commentData.user.avatar),
                       ],
                     )
                   ],
@@ -133,7 +128,7 @@ class MainCard extends StatelessWidget {
                 Divider(
                   thickness: 1.5,
                 ),
-                //                ReplayCard(commentData: commentData)
+                ReplayCard(commentData: commentData)
               ],
             ),
           )
@@ -157,6 +152,7 @@ class ReplayCard extends StatelessWidget {
       children: <Widget>[
         commentData.reply.length > 0
             ? ListView.builder(
+                shrinkWrap: true, // 使用子控件的总长度来设置ListView的长度（这里的长度为高度）
                 itemCount: commentData.reply.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Flex(
@@ -176,12 +172,12 @@ class ReplayCard extends StatelessWidget {
                                       ),
                                     ),
                                     ClipOval(
-                                      child: Container(
-                                        width: 36,
-                                        child: Image.network(
-                                            "https://cdn.sspai.com${commentData.reply[index].author.avatar}"),
-                                      ),
-                                    ),
+                                        child: Container(
+                                      width: 36,
+                                      child: BuildAvatarWidget(
+                                          path: commentData
+                                              .reply[index].author.avatar),
+                                    )),
                                   ],
                                 )
                               ],
@@ -250,5 +246,31 @@ class ReplayCard extends StatelessWidget {
             : Text("No Replay")
       ],
     );
+  }
+}
+
+class BuildAvatarWidget extends StatelessWidget {
+  const BuildAvatarWidget({
+    Key key,
+    @required this.path,
+  }) : super(key: key);
+
+  final String path;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: Container(width: 36, child: _build()),
+    );
+  }
+
+  Widget _build() {
+    try {
+      //      return Image.network("${PathConvert.getWholeImagePath(path)}");
+      return Container();
+    } catch (e) {
+      print('图片加载失败 => ${PathConvert.getWholeImagePath(path)}');
+      return Container();
+    }
   }
 }
