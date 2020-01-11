@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:sspai/bean/feed_attribute.dart';
 import 'package:sspai/request/request.dart';
 import 'package:sspai/util/date_utils.dart';
+import 'package:sspai/widget/avatar_clipoval.dart';
 
 class Article extends StatefulWidget {
   @override
@@ -98,11 +99,10 @@ class _ArticleState extends State<Article> with SingleTickerProviderStateMixin {
                     spacing: 18,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
-                      ClipOval(
-                          child: Image.network(
-                        "https://cdn.sspai.com/${feedAttribute.avatar}",
-                        width: 32,
-                      )),
+                      AvatarClipoval(
+                        path: feedAttribute.avatar,
+                        size: 32,
+                      ),
                       Text(
                         feedAttribute.nickname,
                         style: TextStyle(

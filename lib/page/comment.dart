@@ -45,6 +45,14 @@ class _CommentState extends State<Comment> with SingleTickerProviderStateMixin {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
+        ),
+      ),
     );
   }
 }

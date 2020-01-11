@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sspai/page/comment.dart';
+import 'package:sspai/page/about_me.dart';
 import 'package:sspai/page/index.dart';
 import 'package:sspai/page/matrix.dart';
 
@@ -20,16 +20,16 @@ class _Item {
 class _SkeletonState extends State<Skeleton> {
   final itemNames = [
     _Item(
-      'Index',
+      '首页',
       Icons.line_style,
       Icons.list,
     ),
     _Item('Matrix', Icons.star, Icons.star_border),
-    _Item('Me', Icons.perm_contact_calendar, Icons.perm_identity),
+    _Item('我', Icons.perm_contact_calendar, Icons.perm_identity),
   ];
 
   List<Widget> pages;
-  final pageNames = ["Index", "Matrix", "Me"];
+  final pageNames = ["首页", "Matrix", "关于我"];
   List<BottomNavigationBarItem> itemList;
 
   int _selectIndex = 0;
@@ -50,7 +50,7 @@ class _SkeletonState extends State<Skeleton> {
     super.initState();
     print('initState _ContainerPageState');
     if (pages == null) {
-      pages = [Index(), Matrix()];
+      pages = [Index(), Matrix(), AboutMe()];
     }
     if (itemList == null) {
       itemList = itemNames
@@ -78,7 +78,7 @@ class _SkeletonState extends State<Skeleton> {
         children: <Widget>[
           _getPagesWidget(0),
           _getPagesWidget(1),
-          //          _getPagesWidget(2)
+          _getPagesWidget(2)
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -1,14 +1,16 @@
 class PathConvert {
   static String getWholeImagePath(String path) {
-    if (path.contains("https://cnd.sspai.com")) {
+    //    print(path);
+    if (path == "") {
+      return "https://cdn.sspai.com/sspai/assets/img/favicon/icon.ico";
+    }
+    if (path.contains("https://cdn.sspai.com")) {
       return path;
     } else {
       if (path.startsWith("/")) {
-        print('startwith /' + "https://cnd.sspai.com" + path);
-        return "https://cnd.sspai.com" + path;
+        return "https://cdn.sspai.com" + path;
       } else {
-        print("https://cnd.sspai.com/" + path);
-        return "https://cnd.sspai.com/" + path;
+        return "https://cdn.sspai.com/" + path;
       }
     }
   }

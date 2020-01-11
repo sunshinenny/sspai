@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:sspai/bean/comment_entity.dart';
 import 'package:sspai/util/date_utils.dart';
-import 'package:sspai/util/path_convert.dart';
+
+import 'avatar_clipoval.dart';
 
 class CommentCard extends StatefulWidget {
   CommentCard({Key key, this.commentData}) : super(key: key);
@@ -52,28 +53,26 @@ class MainCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    // 根据子组件的高度计算自身高度
+    return IntrinsicHeight(
       child: Flex(
         direction: Axis.horizontal,
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        ClipOval(
-                          child: Container(
-                            width: 36,
-                          ),
-                        ),
-                        BuildAvatarWidget(path: commentData.user.avatar),
-                      ],
-                    )
-                  ],
-                )),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4.5),
+                    child: AvatarClipoval(
+                      path: commentData.user.avatar,
+                      size: 36,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             flex: 12,
@@ -183,88 +182,82 @@ class ChildCommentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Flex(
-          direction: Axis.horizontal,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          ClipOval(
-                            child: Container(
-                              width: 36,
-                            ),
-                          ),
-                          ClipOval(
-                              child: Container(
-                            width: 36,
-                            child: BuildAvatarWidget(
-                                path: commantDataReply.author.avatar),
-                          )),
-                        ],
-                      ),
-                    ],
-                  )),
-            ),
-            Expanded(
-              flex: 12,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "${getReplayAuthorText()}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        child: Text(
-                          "···",
-                          style:
-                              TextStyle(fontSize: 30, color: Colors.grey[350]),
+        IntrinsicHeight(
+          child: Flex(
+            direction: Axis.horizontal,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4.5),
+                        child: AvatarClipoval(
+                          path: commantDataReply.author.avatar,
+                          size: 36,
                         ),
-                        onTap: () => {},
-                      )
-                    ],
-                  ),
-                  // 评论内容
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Html(
-                        data: commantDataReply.comment,
-                        defaultTextStyle: TextStyle(fontSize: 16),
-                      )),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "${DateUtils.getHowLongAgo(commantDataReply.createdAt * 1000)}",
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
-                      Spacer(),
-                      IconButton(
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 12,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "${getReplayAuthorText()}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          child: Text(
+                            "···",
+                            style: TextStyle(
+                                fontSize: 30, color: Colors.grey[350]),
+                          ),
+                          onTap: () => {},
+                        )
+                      ],
+                    ),
+                    // 评论内容
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Html(
+                          data: commantDataReply.comment,
+                          defaultTextStyle: TextStyle(fontSize: 16),
+                        )),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "${DateUtils.getHowLongAgo(commantDataReply.createdAt * 1000)}",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                        Spacer(),
+                        IconButton(
+                            icon: Icon(
+                              Icons.thumb_up,
+                              size: 20,
+                            ),
+                            onPressed: null),
+                        IconButton(
                           icon: Icon(
-                            Icons.thumb_up,
+                            Icons.comment,
                             size: 20,
                           ),
-                          onPressed: null),
-                      IconButton(
-                        icon: Icon(
-                          Icons.comment,
-                          size: 20,
-                        ),
-                        onPressed: () {},
-                      )
-                    ],
-                  )
-                ],
+                          onPressed: () {},
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Divider(
           thickness: 1.5,
@@ -278,32 +271,6 @@ class ChildCommentCard extends StatelessWidget {
       return commantDataReply.user.nickname;
     } else {
       return "${commantDataReply.user.nickname} 回复 ${commantDataReply.author.nickname}";
-    }
-  }
-}
-
-class BuildAvatarWidget extends StatelessWidget {
-  const BuildAvatarWidget({
-    Key key,
-    @required this.path,
-  }) : super(key: key);
-
-  final String path;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipOval(
-      child: Container(width: 36, child: _build()),
-    );
-  }
-
-  Widget _build() {
-    try {
-      //            return Image.network("${PathConvert.getWholeImagePath(path)}");
-      return Container();
-    } catch (e) {
-      print('图片加载失败 => ${PathConvert.getWholeImagePath(path)}');
-      return Container();
     }
   }
 }

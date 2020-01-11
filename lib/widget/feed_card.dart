@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sspai/bean/feed_attribute.dart';
 import 'package:sspai/util/date_utils.dart';
+import 'package:sspai/widget/avatar_clipoval.dart';
 
 // ignore: must_be_immutable
 class FeedCard extends StatelessWidget {
@@ -16,39 +17,83 @@ class FeedCard extends StatelessWidget {
     // 定义四周间距
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-      child: Column(
-        children: <Widget>[
-          Flex(
-            children: <Widget>[
-              IconNameAndOptions(
-                avatar: feedAttribute.avatar,
-                nickname: feedAttribute.nickname,
+      child: IntrinsicHeight(
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                children: <Widget>[
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.threesixty),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.threesixty),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.threesixty),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.threesixty),
+                    onPressed: () {},
+                  ),
+                ],
               ),
-              GestureDetector(
-                child: Column(
-                  children: <Widget>[
-                    ImageFromWeb(banner: feedAttribute.banner),
-                    TextTitleAndBody(
-                      title: feedAttribute.title,
-                      summary: feedAttribute.summary,
-                    ),
-                  ],
-                ),
-                onTap: () => {
-                  Navigator.of(context)
-                      .pushNamed("article_page", arguments: feedAttribute)
-                },
-              ),
-              BottomInfo(
-                like_count: feedAttribute.likeCount,
-                comment_count: feedAttribute.commentCount,
-                released_time: feedAttribute.releasedTime,
-              )
-            ],
-            direction: Axis.vertical,
-          ),
-        ],
+            ),
+            DisplayCard(feedAttribute: feedAttribute),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class DisplayCard extends StatelessWidget {
+  const DisplayCard({
+    Key key,
+    @required this.feedAttribute,
+  }) : super(key: key);
+
+  final FeedAttribute feedAttribute;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Flex(
+          children: <Widget>[
+            IconNameAndOptions(
+              avatar: feedAttribute.avatar,
+              nickname: feedAttribute.nickname,
+            ),
+            GestureDetector(
+              child: Column(
+                children: <Widget>[
+                  ImageFromWeb(banner: feedAttribute.banner),
+                  TextTitleAndBody(
+                    title: feedAttribute.title,
+                    summary: feedAttribute.summary,
+                  ),
+                ],
+              ),
+              onTap: () => {
+                Navigator.of(context)
+                    .pushNamed("article_page", arguments: feedAttribute)
+              },
+            ),
+            BottomInfo(
+              like_count: feedAttribute.likeCount,
+              comment_count: feedAttribute.commentCount,
+              released_time: feedAttribute.releasedTime,
+            )
+          ],
+          direction: Axis.vertical,
+        ),
+      ],
     );
   }
 }
@@ -70,19 +115,9 @@ class IconNameAndOptions extends StatelessWidget {
           spacing: 8,
           children: <Widget>[
             GestureDetector(
-              child: Stack(
-                children: <Widget>[
-                  // 为了保证图片未加载时候的显示效果
-                  ClipOval(
-                      child: Container(
-                    width: 40,
-                  )),
-                  ClipOval(
-                      child: Image.network(
-                    "https://cdn.sspai.com/$avatar",
-                    width: 40,
-                  )),
-                ],
+              child: AvatarClipoval(
+                path: avatar,
+                size: 36,
               ),
               onTap: () => {print("Show User Home Page")},
             ),
