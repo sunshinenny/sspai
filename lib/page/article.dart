@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/rich_text_parser.dart';
 import 'package:sspai/bean/feed_attribute.dart';
 import 'package:sspai/request/request.dart';
 import 'package:sspai/util/date_utils.dart';
 import 'package:sspai/widget/avatar_clipoval.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Article extends StatefulWidget {
   @override
@@ -124,6 +126,16 @@ class _ArticleState extends State<Article> with SingleTickerProviderStateMixin {
                               linkStyle: const TextStyle(
                                   color: Colors.redAccent,
                                   textBaseline: TextBaseline.ideographic),
+                              onLinkTap: (url) => {
+                                    Navigator.of(context).push(
+                                        new MaterialPageRoute(builder: (_) {
+                                      return WebView(
+                                        initialUrl: url,
+                                        javascriptMode:
+                                            JavascriptMode.unrestricted,
+                                      );
+                                    }))
+                                  },
                               defaultTextStyle: TextStyle(fontSize: 18));
                         } else {
                           return LinearProgressIndicator();

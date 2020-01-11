@@ -1,53 +1,37 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:share/share.dart';
 import 'package:sspai/bean/feed_attribute.dart';
 import 'package:sspai/util/date_utils.dart';
 import 'package:sspai/widget/avatar_clipoval.dart';
 
 // ignore: must_be_immutable
-class FeedCard extends StatelessWidget {
+class FeedCard extends StatefulWidget {
   FeedCard({Key key, this.feedAttribute}) : super(key: key);
 
   FeedAttribute feedAttribute;
+
+  @override
+  State<StatefulWidget> createState() =>
+      _FeedCardState(feedAttribute: feedAttribute);
+}
+
+class _FeedCardState extends State<FeedCard> {
+  _FeedCardState({Key key, this.feedAttribute});
+
+  FeedAttribute feedAttribute;
+
+  double _left = 0.0; // 距左边的偏移
 
   @override
   Widget build(BuildContext context) {
     // 定义四周间距
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-      child: IntrinsicHeight(
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                children: <Widget>[
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.threesixty),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.threesixty),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.threesixty),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.threesixty),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-            DisplayCard(feedAttribute: feedAttribute),
-          ],
-        ),
-      ),
+      child: DisplayCard(feedAttribute: feedAttribute),
     );
   }
 }
@@ -64,34 +48,30 @@ class DisplayCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Flex(
-          children: <Widget>[
-            IconNameAndOptions(
-              avatar: feedAttribute.avatar,
-              nickname: feedAttribute.nickname,
-            ),
-            GestureDetector(
-              child: Column(
-                children: <Widget>[
-                  ImageFromWeb(banner: feedAttribute.banner),
-                  TextTitleAndBody(
-                    title: feedAttribute.title,
-                    summary: feedAttribute.summary,
-                  ),
-                ],
+        IconNameAndOptions(
+          avatar: feedAttribute.avatar,
+          nickname: feedAttribute.nickname,
+          id: feedAttribute.id,
+        ),
+        GestureDetector(
+          child: Column(
+            children: <Widget>[
+              ImageFromWeb(banner: feedAttribute.banner),
+              TextTitleAndBody(
+                title: feedAttribute.title,
+                summary: feedAttribute.summary,
               ),
-              onTap: () => {
-                Navigator.of(context)
-                    .pushNamed("article_page", arguments: feedAttribute)
-              },
-            ),
-            BottomInfo(
-              like_count: feedAttribute.likeCount,
-              comment_count: feedAttribute.commentCount,
-              released_time: feedAttribute.releasedTime,
-            )
-          ],
-          direction: Axis.vertical,
+            ],
+          ),
+          onTap: () => {
+            Navigator.of(context)
+                .pushNamed("article_page", arguments: feedAttribute)
+          },
+        ),
+        BottomInfo(
+          like_count: feedAttribute.likeCount,
+          comment_count: feedAttribute.commentCount,
+          released_time: feedAttribute.releasedTime,
         ),
       ],
     );
@@ -101,10 +81,12 @@ class DisplayCard extends StatelessWidget {
 /// 用户头像、用户名和操作项
 // ignore: must_be_immutable
 class IconNameAndOptions extends StatelessWidget {
-  IconNameAndOptions({Key key, this.avatar, this.nickname}) : super(key: key);
+  IconNameAndOptions({Key key, this.avatar, this.nickname, this.id})
+      : super(key: key);
 
   String avatar;
   String nickname;
+  int id;
 
   @override
   Widget build(BuildContext context) {
@@ -133,21 +115,40 @@ class IconNameAndOptions extends StatelessWidget {
         Row(
           children: <Widget>[
             GestureDetector(
-              child: Text(
-                "···",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26,
-                  color: isDarkMode(context) ? Colors.white : Colors.black26,
+                child: Text(
+                  "···",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    color: isDarkMode(context) ? Colors.white : Colors.black26,
+                  ),
                 ),
-              ),
-              onTap: () {
-                print("Show Options");
-              },
-            ),
+                onTap: () {
+                  Share.share("https://sspai.com/post/$id");
+                }),
           ],
         )
       ],
+    );
+  }
+}
+
+/*
+测试组件
+ */
+class _BottomSheet extends StatelessWidget {
+  const _BottomSheet({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    //    print(ScreenUtils.screenH(context));
+    return BottomSheet(
+      builder: (BuildContext context) {
+        return Container(height: 300, color: Colors.red);
+      },
+      onClosing: () {},
     );
   }
 }
