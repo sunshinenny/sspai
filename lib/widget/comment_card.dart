@@ -36,7 +36,7 @@ class _CommentCardState extends State<CommentCard>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: MainCard(commentData: commentData),
     );
   }
@@ -128,7 +128,9 @@ class MainCard extends StatelessWidget {
                 Divider(
                   thickness: 1.5,
                 ),
-                ReplayCard(commentData: commentData)
+                ReplayCard(
+                  commentData: commentData,
+                )
               ],
             ),
           )
@@ -139,113 +141,144 @@ class MainCard extends StatelessWidget {
 }
 
 class ReplayCard extends StatelessWidget {
-  const ReplayCard({
-    Key key,
-    @required this.commentData,
-  }) : super(key: key);
+  const ReplayCard({Key key, @required this.commentData}) : super(key: key);
 
   final CommentData commentData;
+
+  Widget buildList() {
+    List<Widget> cardList = [];
+    Widget content; //单独一个widget组件，用于返回需要生成的内容widget
+    for (var item in commentData.reply) {
+      cardList.add(ChildCommentCard(
+        commantDataReply: item,
+      ));
+    }
+    content = new Column(
+        children: cardList //重点在这里，因为用编辑器写Column生成的children后面会跟一个<Widget>[]，
+        //此时如果我们直接把生成的tiles放在<Widget>[]中是会报一个类型不匹配的错误，把<Widget>[]删了就可以了
+        );
+    return content;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        commentData.reply.length > 0
-            ? ListView.builder(
-                shrinkWrap: true, // 使用子控件的总长度来设置ListView的长度（这里的长度为高度）
-                itemCount: commentData.reply.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Flex(
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Column(
-                              children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    ClipOval(
-                                      child: Container(
-                                        width: 36,
-                                      ),
-                                    ),
-                                    ClipOval(
-                                        child: Container(
-                                      width: 36,
-                                      child: BuildAvatarWidget(
-                                          path: commentData
-                                              .reply[index].author.avatar),
-                                    )),
-                                  ],
-                                )
-                              ],
-                            )),
-                      ),
-                      Expanded(
-                        flex: 12,
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "${commentData.reply[index].author.nickname}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                                Spacer(),
-                                GestureDetector(
-                                  child: Text(
-                                    "···",
-                                    style: TextStyle(
-                                        fontSize: 40, color: Colors.grey[350]),
-                                  ),
-                                  onTap: () => {},
-                                )
-                              ],
-                            ),
-                            // 评论内容
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Html(
-                                  data: commentData.reply[index].comment,
-                                  defaultTextStyle: TextStyle(fontSize: 16),
-                                )),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "${DateUtils.getHowLongAgo(commentData.reply[index].createdAt * 1000)}",
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 14),
-                                ),
-                                Spacer(),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.thumb_up,
-                                      size: 20,
-                                    ),
-                                    onPressed: null),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.comment,
-                                    size: 20,
-                                  ),
-                                  onPressed: () {},
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                },
-              )
-            : Text("No Replay")
+        commentData.reply.length > 0 ? buildList() : Container()
       ],
     );
+  }
+}
+
+class ChildCommentCard extends StatelessWidget {
+  const ChildCommentCard(
+      {Key key, @required this.commantDataReply, this.parentNickname})
+      : super(key: key);
+
+  final parentNickname;
+
+  final CommantDataReply commantDataReply;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Flex(
+          direction: Axis.horizontal,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          ClipOval(
+                            child: Container(
+                              width: 36,
+                            ),
+                          ),
+                          ClipOval(
+                              child: Container(
+                            width: 36,
+                            child: BuildAvatarWidget(
+                                path: commantDataReply.author.avatar),
+                          )),
+                        ],
+                      ),
+                    ],
+                  )),
+            ),
+            Expanded(
+              flex: 12,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "${getReplayAuthorText()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        child: Text(
+                          "···",
+                          style:
+                              TextStyle(fontSize: 30, color: Colors.grey[350]),
+                        ),
+                        onTap: () => {},
+                      )
+                    ],
+                  ),
+                  // 评论内容
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Html(
+                        data: commantDataReply.comment,
+                        defaultTextStyle: TextStyle(fontSize: 16),
+                      )),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "${DateUtils.getHowLongAgo(commantDataReply.createdAt * 1000)}",
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                      Spacer(),
+                      IconButton(
+                          icon: Icon(
+                            Icons.thumb_up,
+                            size: 20,
+                          ),
+                          onPressed: null),
+                      IconButton(
+                        icon: Icon(
+                          Icons.comment,
+                          size: 20,
+                        ),
+                        onPressed: () {},
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        Divider(
+          thickness: 1.5,
+        ),
+      ],
+    );
+  }
+
+  String getReplayAuthorText() {
+    if (commantDataReply.author.nickname == "") {
+      return commantDataReply.user.nickname;
+    } else {
+      return "${commantDataReply.user.nickname} 回复 ${commantDataReply.author.nickname}";
+    }
   }
 }
 
@@ -266,7 +299,7 @@ class BuildAvatarWidget extends StatelessWidget {
 
   Widget _build() {
     try {
-      //      return Image.network("${PathConvert.getWholeImagePath(path)}");
+      //            return Image.network("${PathConvert.getWholeImagePath(path)}");
       return Container();
     } catch (e) {
       print('图片加载失败 => ${PathConvert.getWholeImagePath(path)}');
