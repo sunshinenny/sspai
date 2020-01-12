@@ -101,7 +101,22 @@ class IconNameAndOptions extends StatelessWidget {
                 path: avatar,
                 size: 36,
               ),
-              onTap: () => {print("Show User Home Page")},
+              onTap: () => {
+                //打开B路由
+                Navigator.push(context, PageRouteBuilder(pageBuilder:
+                    (BuildContext context, Animation animation,
+                        Animation secondaryAnimation) {
+                  return new FadeTransition(
+                    opacity: animation,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        title: Text("原图"),
+                      ),
+                      body: Container(),
+                    ),
+                  );
+                }))
+              },
             ),
             Text(
               "$nickname",

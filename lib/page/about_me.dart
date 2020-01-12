@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sspai/page/index.dart';
 import 'package:sspai/widget/avatar_clipoval.dart';
 
 class AboutMe extends StatefulWidget {
@@ -8,8 +9,6 @@ class AboutMe extends StatefulWidget {
 
 class _AboutMeState extends State<AboutMe> with SingleTickerProviderStateMixin {
   AnimationController _controller;
-
-  List<Flex> _pages;
 
   List _pageList = [
     Pages("个人主页", Container()),
@@ -24,46 +23,6 @@ class _AboutMeState extends State<AboutMe> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
-    if (_pages == null) {
-      _pages = _pageList
-          .map((item) => Flex(
-                direction: Axis.horizontal,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    flex: 9,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                item.title,
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black87),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Icons.chevron_right,
-                                color: Colors.grey,
-                              )
-                            ],
-                          ),
-                        ),
-                        Divider(
-                          thickness: 1.5,
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ))
-          .toList();
-    }
     super.initState();
   }
 
@@ -82,9 +41,19 @@ class _AboutMeState extends State<AboutMe> with SingleTickerProviderStateMixin {
               const EdgeInsets.only(top: 20, bottom: 40, left: 20, right: 20),
           child: Row(
             children: <Widget>[
-              AvatarClipoval(
-                path: "",
-                size: 88,
+              GestureDetector(
+                child: InkWell(
+                  child: Hero(
+                    tag: "avatar",
+                    child: AvatarClipoval(
+                      path: "",
+                      size: 88,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  print('准备修改头像的页面');
+                },
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,11 +77,48 @@ class _AboutMeState extends State<AboutMe> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-        SingleChildScrollView(
-          child: Column(
-            children: _pages,
-          ),
-        ),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: _pageList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Flex(
+              direction: Axis.horizontal,
+              children: <Widget>[
+                Expanded(
+                  child: Container(),
+                  flex: 1,
+                ),
+                Expanded(
+                  flex: 9,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              _pageList[index].title,
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.black87),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.chevron_right,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        thickness: 1.5,
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        )
       ],
     );
   }

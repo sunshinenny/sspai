@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sspai/bean/feed_attribute.dart';
+import 'package:sspai/page/pay_row_list.dart';
 import 'package:sspai/request/request.dart';
 import 'package:sspai/widget/feed_card.dart';
+
+import 'homesub_row_list.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -29,18 +32,27 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
+              shrinkWrap: true,
               itemCount: snapshot.data.data.length,
               itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return HomesubRowList();
+                }
+                if (index == 2) {
+                  return PayRowList();
+                }
                 return FeedCard(
                     feedAttribute: new FeedAttribute(
                         snapshot.data.data[index].id,
                         snapshot.data.data[index].title,
-                        snapshot.data.data[index].author.avatar.replaceAll("https://cdn.sspai.com",""),
+                        snapshot.data.data[index].author.avatar
+                            .replaceAll("https://cdn.sspai.com", ""),
                         snapshot.data.data[index].author.nickname,
                         snapshot.data.data[index].likeTotal,
                         snapshot.data.data[index].commentTotal,
                         snapshot.data.data[index].releasedAt,
-                        snapshot.data.data[index].banner.replaceAll("https://cdn.sspai.com",""),
+                        snapshot.data.data[index].banner
+                            .replaceAll("https://cdn.sspai.com", ""),
                         snapshot.data.data[index].summary));
               });
         } else {

@@ -7,6 +7,10 @@ import 'package:sspai/bean/matrix_entity.dart';
 import 'package:sspai/generated/json/matrix_entity_helper.dart';
 import 'package:sspai/bean/comment_entity.dart';
 import 'package:sspai/generated/json/comment_entity_helper.dart';
+import 'package:sspai/bean/pay_entity.dart';
+import 'package:sspai/generated/json/pay_entity_helper.dart';
+import 'package:sspai/bean/homesub_entity.dart';
+import 'package:sspai/generated/json/homesub_entity_helper.dart';
 import 'package:sspai/bean/index_entity.dart';
 import 'package:sspai/generated/json/index_entity_helper.dart';
 
@@ -30,7 +34,11 @@ class JsonConvert<T> {
 			return commentDataArticleFromJson(data as CommentDataArticle, json) as T;			case CommentDataArticleAuthor:
 			return commentDataArticleAuthorFromJson(data as CommentDataArticleAuthor, json) as T;			case CommentDataSeries:
 			return commentDataSeriesFromJson(data as CommentDataSeries, json) as T;			case CommentDataSeriesAuthor:
-			return commentDataSeriesAuthorFromJson(data as CommentDataSeriesAuthor, json) as T;			case IndexEntity:
+			return commentDataSeriesAuthorFromJson(data as CommentDataSeriesAuthor, json) as T;			case PayEntity:
+			return payEntityFromJson(data as PayEntity, json) as T;			case PayData:
+			return payDataFromJson(data as PayData, json) as T;			case HomesubEntity:
+			return homesubEntityFromJson(data as HomesubEntity, json) as T;			case HomesubData:
+			return homesubDataFromJson(data as HomesubData, json) as T;			case IndexEntity:
 			return indexEntityFromJson(data as IndexEntity, json) as T;			case IndexData:
 			return indexDataFromJson(data as IndexData, json) as T;			case IndexDataAuthor:
 			return indexDataAuthorFromJson(data as IndexDataAuthor, json) as T;    }
@@ -50,7 +58,11 @@ class JsonConvert<T> {
 			return commentDataArticleToJson(data as CommentDataArticle);			case CommentDataArticleAuthor:
 			return commentDataArticleAuthorToJson(data as CommentDataArticleAuthor);			case CommentDataSeries:
 			return commentDataSeriesToJson(data as CommentDataSeries);			case CommentDataSeriesAuthor:
-			return commentDataSeriesAuthorToJson(data as CommentDataSeriesAuthor);			case IndexEntity:
+			return commentDataSeriesAuthorToJson(data as CommentDataSeriesAuthor);			case PayEntity:
+			return payEntityToJson(data as PayEntity);			case PayData:
+			return payDataToJson(data as PayData);			case HomesubEntity:
+			return homesubEntityToJson(data as HomesubEntity);			case HomesubData:
+			return homesubDataToJson(data as HomesubData);			case IndexEntity:
 			return indexEntityToJson(data as IndexEntity);			case IndexData:
 			return indexDataToJson(data as IndexData);			case IndexDataAuthor:
 			return indexDataAuthorToJson(data as IndexDataAuthor);    }
@@ -70,7 +82,11 @@ class JsonConvert<T> {
 			return CommentDataArticle().fromJson(json) as T;			case 'CommentDataArticleAuthor':
 			return CommentDataArticleAuthor().fromJson(json) as T;			case 'CommentDataSeries':
 			return CommentDataSeries().fromJson(json) as T;			case 'CommentDataSeriesAuthor':
-			return CommentDataSeriesAuthor().fromJson(json) as T;			case 'IndexEntity':
+			return CommentDataSeriesAuthor().fromJson(json) as T;			case 'PayEntity':
+			return PayEntity().fromJson(json) as T;			case 'PayData':
+			return PayData().fromJson(json) as T;			case 'HomesubEntity':
+			return HomesubEntity().fromJson(json) as T;			case 'HomesubData':
+			return HomesubData().fromJson(json) as T;			case 'IndexEntity':
 			return IndexEntity().fromJson(json) as T;			case 'IndexData':
 			return IndexData().fromJson(json) as T;			case 'IndexDataAuthor':
 			return IndexDataAuthor().fromJson(json) as T;    }

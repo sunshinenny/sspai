@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sspai/page/about_me.dart';
 import 'package:sspai/page/index.dart';
@@ -10,23 +11,24 @@ class Skeleton extends StatefulWidget {
   _SkeletonState createState() => _SkeletonState();
 }
 
+final itemNames = [
+  _Item(
+    '首页',
+    CupertinoIcons.news_solid,
+    CupertinoIcons.news,
+  ),
+  _Item('Matrix', CupertinoIcons.collections_solid, CupertinoIcons.collections),
+  _Item('我', CupertinoIcons.person_solid, CupertinoIcons.profile_circled),
+];
+
+
 class _Item {
   String name;
   IconData activeIcon, normalIcon;
 
   _Item(this.name, this.activeIcon, this.normalIcon);
 }
-
 class _SkeletonState extends State<Skeleton> {
-  final itemNames = [
-    _Item(
-      '首页',
-      Icons.line_style,
-      Icons.list,
-    ),
-    _Item('Matrix', Icons.star, Icons.star_border),
-    _Item('我', Icons.perm_contact_calendar, Icons.perm_identity),
-  ];
 
   List<Widget> pages;
   final pageNames = ["首页", "Matrix", "关于我"];
