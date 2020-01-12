@@ -68,8 +68,14 @@ class _ArticleState extends State<Article> with SingleTickerProviderStateMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Image.network(
-                  "https://cdn.sspai.com/${feedAttribute.banner}?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1"),
+              Hero(
+                tag: "feed_banner_${feedAttribute.banner}",
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.network(
+                      "https://cdn.sspai.com/${feedAttribute.banner}?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1"),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Align(

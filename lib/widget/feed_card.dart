@@ -56,7 +56,7 @@ class DisplayCard extends StatelessWidget {
         GestureDetector(
           child: Column(
             children: <Widget>[
-              ImageFromWeb(banner: feedAttribute.banner),
+              Hero(child: ImageFromWeb(banner: feedAttribute.banner), tag: "feed_banner_${feedAttribute.banner}",),
               TextTitleAndBody(
                 title: feedAttribute.title,
                 summary: feedAttribute.summary,
@@ -221,7 +221,6 @@ class ImageFromWeb extends StatelessWidget {
             borderRadius: BorderRadius.circular(6.0),
             child: Container(
               width: 450,
-              height: 150,
             ),
           ),
           ClipRRect(
@@ -229,7 +228,7 @@ class ImageFromWeb extends StatelessWidget {
             child: Image.network(
               "https://cdn.sspai.com/$banner?imageMogr2/quality/95/thumbnail/!1200x400r/gravity/Center/crop/1200x400/interlace/1",
               width: 450,
-              height: 150,
+              fit: BoxFit.fitHeight,
             ),
           ),
         ],

@@ -16,6 +16,7 @@ class HomesubCard extends StatelessWidget {
         child: Image.network(
           PathConvert.getWholeImagePath(data.image),
           width: ScreenUtils.screenW(context)*0.85,
+          fit: BoxFit.fitHeight,
         ),
         borderRadius: BorderRadius.all(Radius.circular(6.0)),
       ),

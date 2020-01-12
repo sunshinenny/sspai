@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sspai/bean/pay_entity.dart';
+import 'package:sspai/page/pay_card_detail.dart';
 import 'package:sspai/util/path_convert.dart';
 
 class PayCard extends StatefulWidget {
@@ -39,12 +40,19 @@ class _PayCardState extends State<PayCard> with SingleTickerProviderStateMixin {
       child: ScaleTransition(
         child: GestureDetector(
           child: ClipRRect(
-            child: Image.network(
-              PathConvert.getWholeImagePath(payData.banner),
-              width: 200,
+            child: Hero(
+              child: Image.network(
+                PathConvert.getWholeImagePath(payData.banner),
+                width: 200,
+                fit: BoxFit.fitHeight,
+              ), tag: "banner${payData.title}",
             ),
             borderRadius: BorderRadius.all(Radius.circular(6.0)),
           ),
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed("pay_detail_page", arguments: payData);
+          },
           onPanDown: (details) {
             print('onPanDown');
             _controller.forward(); // 点击的时候播放动画
