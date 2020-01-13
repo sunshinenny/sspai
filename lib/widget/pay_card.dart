@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sspai/bean/pay_entity.dart';
 import 'package:sspai/page/pay_card_detail.dart';
@@ -45,13 +46,19 @@ class _PayCardState extends State<PayCard> with SingleTickerProviderStateMixin {
                 PathConvert.getWholeImagePath(payData.banner),
                 width: 200,
                 fit: BoxFit.fitHeight,
-              ), tag: "banner${payData.title}",
+              ),
+              tag: "banner${payData.title}",
             ),
             borderRadius: BorderRadius.all(Radius.circular(6.0)),
           ),
           onTap: () {
-            Navigator.of(context)
-                .pushNamed("pay_detail_page", arguments: payData);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PayCardDetail(
+                    payData: payData,
+                  ),
+                ));
           },
           onPanDown: (details) {
             print('onPanDown');

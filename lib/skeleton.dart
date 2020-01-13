@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sspai/page/about_me.dart';
 import 'package:sspai/page/index.dart';
 import 'package:sspai/page/matrix.dart';
+import 'package:sspai/widget/x_app_bar.dart';
+import 'package:provider/provider.dart';
 
 class Skeleton extends StatefulWidget {
   Skeleton({Key key}) : super(key: key);
@@ -21,15 +23,14 @@ final itemNames = [
   _Item('我', CupertinoIcons.person_solid, CupertinoIcons.profile_circled),
 ];
 
-
 class _Item {
   String name;
   IconData activeIcon, normalIcon;
 
   _Item(this.name, this.activeIcon, this.normalIcon);
 }
-class _SkeletonState extends State<Skeleton> {
 
+class _SkeletonState extends State<Skeleton> {
   List<Widget> pages;
   final pageNames = ["首页", "Matrix", "关于我"];
   List<BottomNavigationBarItem> itemList;
@@ -73,8 +74,12 @@ class _SkeletonState extends State<Skeleton> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(pageNames[_selectIndex]),
+      //      appBar: AppBar(
+      //        title: Text(pageNames[_selectIndex]),
+      //      ),
+      appBar: XAppBar(
+        title: pageNames[_selectIndex],
+        textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
       body: Stack(
         children: <Widget>[

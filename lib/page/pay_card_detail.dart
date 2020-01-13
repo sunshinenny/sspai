@@ -8,6 +8,9 @@ import 'dart:ui' as ui;
 import 'package:sspai/widget/avatar_clipoval.dart';
 
 class PayCardDetail extends StatefulWidget {
+  PayCardDetail({Key key, this.payData}) : super(key: key);
+  final PayData payData;
+
   @override
   _PayCardDetailState createState() => _PayCardDetailState();
 }
@@ -30,121 +33,128 @@ class _PayCardDetailState extends State<PayCardDetail>
 
   @override
   Widget build(BuildContext context) {
-    PayData payData = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(payData.title),
-        //        leading: IconButton(
-        //          icon: Icon(CupertinoIcons.back),
-        //          onPressed: () {
-        //            Navigator.pop(context);
-        //          },
-        //        ),
-      ),
-      body: SingleChildScrollView(
-        child: Wrap(
-          children: <Widget>[
-            Hero(
-              tag: "banner${payData.title}",
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      ClipRect(
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          heightFactor: .7, //宽度设为原来宽度一半
-                          child: Stack(
-                            children: <Widget>[
-                              Image.network(
-                                PathConvert.getWholeImagePath(payData.banner),
-                              ),
-                              BackdropFilter(
-                                filter: ui.ImageFilter.blur(
-                                  sigmaX: 10,
-                                  sigmaY: 20,
+//      appBar: AppBar(
+//        title: Text(widget.payData.title),
+//        //        leading: IconButton(
+//        //          icon: Icon(CupertinoIcons.back),
+//        //          onPressed: () {
+//        //            Navigator.pop(context);
+//        //          },
+//        //        ),
+//      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Wrap(
+            children: <Widget>[
+              Hero(
+                tag: "banner${widget.payData.title}",
+                child: Column(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        ClipRect(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            heightFactor: .7, //宽度设为原来宽度一半
+                            child: Stack(
+                              children: <Widget>[
+                                Image.network(
+                                  PathConvert.getWholeImagePath(widget.payData.banner),
                                 ),
-                                child: Container(
-                                  color: Colors.white.withOpacity(0.1),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 450,
+                                BackdropFilter(
+                                  filter: ui.ImageFilter.blur(
+                                    sigmaX: 10,
+                                    sigmaY: 20,
+                                  ),
+                                  child: Container(
+                                    color: Colors.white.withOpacity(0.1),
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 450,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: Center(
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                PathConvert.getWholeImagePath(payData.banner),
-                                width: ScreenUtils.screenW(context) * 0.75,
-                              ),
+                              ],
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18.0),
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "售价：${payData.fee ~/ 100}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 2,
-                    indent: ScreenUtils.screenH(context) * 0.02,
-                    endIndent: ScreenUtils.screenH(context) * 0.02,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("作者简介:",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
                         Padding(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: Row(
-                            children: <Widget>[
-                              AvatarClipoval(path: payData.avatar, size: 50),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text(
-                                  payData.nickname,
-                                  style: TextStyle(fontSize: 20),
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  PathConvert.getWholeImagePath(widget.payData.banner),
+                                  width: ScreenUtils.screenW(context) * 0.75,
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         )
                       ],
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18.0),
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "售价：${widget.payData.fee ~/ 100}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      decoration: TextDecoration.none),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      thickness: 2,
+                      indent: ScreenUtils.screenH(context) * 0.02,
+                      endIndent: ScreenUtils.screenH(context) * 0.02,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("作者简介:",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.none)),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 18.0),
+                            child: Row(
+                              children: <Widget>[
+                                AvatarClipoval(path: widget.payData.avatar, size: 50),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    widget.payData.nickname,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        decoration: TextDecoration.none),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
